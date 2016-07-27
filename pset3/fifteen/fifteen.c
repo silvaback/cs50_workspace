@@ -31,6 +31,7 @@ int board[DIM_MAX][DIM_MAX];
 
 // dimensions
 int d;
+int blank = 0, blanki, blankj;
 
 // prototypes
 void clear(void);
@@ -42,6 +43,7 @@ bool won(void);
 
 int main(int argc, string argv[])
 {
+    
     // ensure proper usage
     if (argc != 2)
     {
@@ -57,6 +59,8 @@ int main(int argc, string argv[])
             DIM_MIN, DIM_MIN, DIM_MAX, DIM_MAX);
         return 2;
     }
+    
+    ;
 
     // open log
     FILE* file = fopen("log.txt", "w");
@@ -159,8 +163,7 @@ void greet(void)
  */
 void init(void)
 {
-    int blank = d * d;
-    int counter = blank - 1;
+    int counter = d * d - 1;
     for (int i = 0; i < d; i++)
     {    for (int j = 0; j < d; j++)
         {
@@ -174,7 +177,7 @@ void init(void)
             
         }
     }
-    if (blank % 2 == 0)
+    if ((d * d) % 2 == 0)
         {
             int temp = board[d - 1][d - 2];
             board[d - 1][d - 2] = board[d - 1][d - 3];
@@ -188,18 +191,22 @@ void init(void)
  */
 void draw(void)
 {
-    int blank = d * d;
     // TODO
     for (int i = 0; i < d; i++)
         {
             for (int j = 0; j < d; j++)
             {
                 if (board[i][j] == blank)
+                {
                     printf("--");
+                    blanki = i;
+                    blankj = j;
+                }
                 else if(board[i][j] < 10)
                     printf(" %i", board[i][j]);
                 else
                     printf("%i", board[i][j]);
+                    
                 if (j < d - 1)
                 {
                     printf("|");
@@ -219,9 +226,26 @@ void draw(void)
  * If tile borders empty space, moves tile and returns true, else
  * returns false. 
  */
+
 bool move(int tile)
 {
-    // TODO
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (tile == board[i][j])
+             {
+                 if((((i + 1) == blanki) && (j == blankj)) || (((i - 1) == blanki) && (j == blankj))
+                    || (((j + 1) == blankj) && (i == blanki)) || (((j - 1) == blankj) && (i == blanki)))
+                    {
+                        int temp = board[i][j];
+                        board[i][j] = board[blanki][blankj];
+                        board[blanki][blankj] = temp;
+                        return true;
+                    }
+             }
+        }
+    }
     return false;
 }
 
@@ -232,5 +256,23 @@ bool move(int tile)
 bool won(void)
 {
     // TODO
-    return false;
+    int counter = 1, win = 0;
+    
+    if (board[d - 1][d - 1] == blank)
+        win++;
+    
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (board[i][j] == counter)
+                win++;
+            counter++;
+            
+        }
+    }
+    if (win == (d * d))
+        return true;
+    else
+        return false;
 }
