@@ -159,7 +159,28 @@ void greet(void)
  */
 void init(void)
 {
-    // TODO
+    int blank = d * d;
+    int counter = blank - 1;
+    for (int i = 0; i < d; i++)
+    {    for (int j = 0; j < d; j++)
+        {
+            if (i == d - 1 && j == d - 1)
+                board [i][j] = blank;
+            else
+            {
+                board[i][j] = counter;
+                counter --;
+            }
+            
+        }
+    }
+    if (blank % 2 == 0)
+        {
+            int temp = board[d - 1][d - 2];
+            board[d - 1][d - 2] = board[d - 1][d - 3];
+            board[d - 1][d - 3] = temp;
+        }
+    return;
 }
 
 /**
@@ -167,7 +188,31 @@ void init(void)
  */
 void draw(void)
 {
+    int blank = d * d;
     // TODO
+    for (int i = 0; i < d; i++)
+        {
+            for (int j = 0; j < d; j++)
+            {
+                if (board[i][j] == blank)
+                    printf("--");
+                else if(board[i][j] < 10)
+                    printf(" %i", board[i][j]);
+                else
+                    printf("%i", board[i][j]);
+                if (j < d - 1)
+                {
+                    printf("|");
+                }
+                
+            }
+            printf("\n");
+            //for (int j = 0; j < d; j++)
+              //  printf("---");
+            //printf("\n");
+        }
+        printf("\n");
+        return;
 }
 
 /**
