@@ -145,6 +145,7 @@ void clear(void)
 {
     printf("\033[2J");
     printf("\033[%d;%dH", 0, 0);
+    //printf("\033[%d;%dm", 42, 30);
 }
 
 /**
@@ -167,9 +168,9 @@ void init(void)
     for (int i = 0; i < d; i++)
     {    for (int j = 0; j < d; j++)
         {
-            if (i == d - 1 && j == d - 1)
+            if (i == d - 1 && j == d - 1)// if i and j are at the bottom right corner initialize to blank
                 board [i][j] = blank;
-            else
+            else // else initialize to counter
             {
                 board[i][j] = counter;
                 counter --;
